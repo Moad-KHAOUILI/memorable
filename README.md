@@ -10,7 +10,7 @@
     A care app for staff in elderly care clinics: medication rounds, tasks and team communication in one place — replacing paper lists.
     <br />
     <br />
-    <a href="TODO-LIVE-LINK"><strong>Open the live PWA »</strong></a>
+    <a href="https://memorable-nu.vercel.app/"><strong>Open the live PWA »</strong></a>
     <br />
     <br />
     <a href="#demo-login">Demo login</a>
@@ -110,7 +110,7 @@ The app is installable (manifest + service worker), works in a phone-width layou
 
 ## Demo Login
 
-Open the [live PWA](TODO-LIVE-LINK), tap your name in the staff list and use:
+Open the [live PWA](https://memorable-nu.vercel.app/), tap your name in the staff list and use:
 
 | | |
 |---|---|
