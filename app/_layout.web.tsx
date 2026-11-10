@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useAuthStore } from '../src/state/useAuthStore';
 import { colors } from '../src/theme';
+import { showViewportDebug } from '../src/utils/viewportDebug';
 
 export default function RootLayout() {
   const initializeSession = useAuthStore((state) => state.initializeSession);
@@ -15,11 +16,10 @@ export default function RootLayout() {
     initializeSession();
   }, [initializeSession]);
 
-  // Installed on the iPhone home screen, CSS heights come out too short (translucent status bar),
-  // so use the real screen height. The app is portrait-only (see manifest.json).
+  // TEMPORARY: show measured viewport sizes in the installed app to fix the white strip at the bottom.
   useEffect(() => {
     if (!window.matchMedia('(display-mode: standalone)').matches) return;
-    document.documentElement.style.setProperty('--app-height', `${window.screen.height}px`);
+    return showViewportDebug();
   }, []);
 
   // iOS Safari ignores user-scalable=no for pinch gestures, so block the pinch itself.
