@@ -11,13 +11,14 @@ import { Spinner } from '../../src/components/primitives/Spinner';
 import { StyledButton } from '../../src/components/StyledButton';
 import { TaskCard } from '../../src/components/TaskCard';
 import { RosterItem } from '../../src/components/RosterItem';
-import { getTasksForDay, getRoster, getCurrentStaff, markAdministered, rosterSlots } from '../../src/services';
-import type { RosterEntry, Staff, Task } from '../../src/types';
+import { getTasksForDay, getRoster, markAdministered, rosterSlots } from '../../src/services';
+import { useAuthStore } from '../../src/state/useAuthStore';
+import type { RosterEntry, Task } from '../../src/types';
 import { colors, shadows, spacing } from '../../src/theme';
 import { formatHeaderDate, toDateKey } from '../../src/utils/date';
 
 export default function HomeScreen() {
-  const [staff, setStaff] = useState<Staff | undefined>(undefined);
+  const staff = useAuthStore((state) => state.user);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [roster, setRoster] = useState<RosterEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,9 +28,8 @@ export default function HomeScreen() {
   const [pageHeight, setPageHeight] = useState(0);
 
   useEffect(() => {
-    Promise.all([getCurrentStaff(), getTasksForDay(toDateKey(new Date())), getRoster()])
-      .then(([currentStaff, taskList, rosterList]) => {
-        setStaff(currentStaff);
+    Promise.all([getTasksForDay(toDateKey(new Date())), getRoster()])
+      .then(([taskList, rosterList]) => {
         setTasks(taskList);
         setRoster(rosterList);
       })
@@ -57,7 +57,7 @@ export default function HomeScreen() {
             <Stack flex={1}>
               <Text size="md" weight="medium" color={colors.textOnPrimary}>{formatHeaderDate(new Date())}</Text>
               <Text size="xxl" weight="bold" color={colors.textOnPrimary}>
-                {staff !== undefined ? `Welcome ${staff.title.replace('.', '')} ${staff.firstName}` : 'Welcome'}
+                {staff !== undefined ? `Welcome ${[staff.title.replace('.', ''), staff.firstName].filter((part) => part !== '').join(' ')}` : 'Welcome'}
               </Text>
             </Stack>
             <Pressable

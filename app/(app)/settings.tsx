@@ -10,6 +10,8 @@ import { InputField } from '../../src/components/primitives/InputField';
 import { PageHeader } from '../../src/components/PageHeader';
 import { Sheet } from '../../src/components/Sheet';
 import { StyledButton } from '../../src/components/StyledButton';
+import { getStaffDisplayName } from '../../src/services';
+import { useAuthStore } from '../../src/state/useAuthStore';
 import { colors, spacing } from '../../src/theme';
 
 const settingItems: { label: string; icon: IconName }[] = [
@@ -25,6 +27,13 @@ const settingItems: { label: string; icon: IconName }[] = [
 
 export default function SettingsScreen() {
   const [search, setSearch] = useState('');
+  const { user, logout } = useAuthStore();
+
+  // Switching staff logs the current person out; the next one logs in with their own password.
+  const handleLogout = async () => {
+    await logout();
+    router.replace('/login');
+  };
 
   const visibleItems = settingItems.filter((item) =>
     item.label.toLowerCase().includes(search.trim().toLowerCase()),
@@ -64,12 +73,24 @@ export default function SettingsScreen() {
             )}
           </Stack>
 
+          {user !== undefined && (
+            <Text size="md" color={colors.textSecondary} align="center">
+              Logged in as {getStaffDisplayName(user)} · {user.role}
+            </Text>
+          )}
+          <StyledButton
+            label="Switch staff member"
+            size="md"
+            icon="people-outline"
+            onPress={handleLogout}
+            testID="switch-staff-button"
+          />
           <StyledButton
             label="Log out"
             variant="secondary"
             size="md"
             icon="log-out-outline"
-            onPress={() => router.replace('/login')}
+            onPress={handleLogout}
             testID="logout-button"
           />
         </Stack>

@@ -4,9 +4,17 @@ import { Slot } from 'expo-router';
 import Head from 'expo-router/head';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useAuthStore } from '../src/state/useAuthStore';
 import { colors } from '../src/theme';
 
 export default function RootLayout() {
+  const initializeSession = useAuthStore((state) => state.initializeSession);
+
+  // Restore a saved login (Supabase keeps the session in the browser).
+  useEffect(() => {
+    initializeSession();
+  }, [initializeSession]);
+
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return;
 

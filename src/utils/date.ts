@@ -48,6 +48,20 @@ export function formatWeekdayLetter(date: Date): string {
   return date.toLocaleDateString(LOCALE, { weekday: 'narrow' });
 }
 
+// Age in full years from a yyyy-mm-dd date of birth.
+export function getAge(dateOfBirth: string, today: Date = new Date()): number {
+  const birth = fromDateKey(dateOfBirth);
+  const hadBirthdayThisYear =
+    today.getMonth() > birth.getMonth() ||
+    (today.getMonth() === birth.getMonth() && today.getDate() >= birth.getDate());
+  return today.getFullYear() - birth.getFullYear() - (hadBirthdayThisYear ? 0 : 1);
+}
+
+// "2 April 1938"
+export function formatDate(dateKey: string): string {
+  return fromDateKey(dateKey).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
 // "10:04"
 export function formatTime(date: Date): string {
   return date.toLocaleTimeString(LOCALE, { hour: '2-digit', minute: '2-digit' });

@@ -28,7 +28,7 @@ const replies: { keywords: string[]; reply: string }[] = [
   },
   {
     keywords: ['incident', 'fall', 'report'],
-    reply: 'Make sure the patient is safe first. Then tap the “!” tab at the bottom to report the incident.',
+    reply: 'Make sure the patient is safe first. Then inform the on-call doctor (ext. 200) and add a note to the patient’s file.',
   },
   {
     keywords: ['app', 'working', 'bug', 'login', 'log in'],

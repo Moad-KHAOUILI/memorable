@@ -15,7 +15,7 @@ const tabs: NavTab[] = [
   { label: 'Home', href: '/', path: '/', icon: 'home-outline', activeIcon: 'home' },
   { label: 'Messages', href: '/messages', path: '/messages', icon: 'chatbubble-ellipses-outline', activeIcon: 'chatbubble-ellipses' },
   { label: 'Tasks', href: '/tasks', path: '/tasks', icon: 'document-text-outline', activeIcon: 'document-text' },
-  { label: 'Incidents', href: '/incidents', path: '/incidents', icon: 'alert-circle-outline', activeIcon: 'alert-circle' },
+  { label: 'Patients', href: '/patients', path: '/patients', icon: 'people-outline', activeIcon: 'people' },
   { label: 'Notifications', href: '/notifications', path: '/notifications', icon: 'notifications-outline', activeIcon: 'notifications' },
 ];
 
