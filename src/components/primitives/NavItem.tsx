@@ -22,7 +22,7 @@ export function NavItem({ label, onPress, active = false, icon }: NavItemProps) 
       accessibilityLabel={label}
       accessibilityState={{ selected: active }}
     >
-      {icon !== undefined && <Icon name={icon} size={26} color={color} />}
+      {icon !== undefined && <Icon name={icon} size={24} color={color} />}
       <Text size="sm" weight={active ? 'medium' : 'normal'} color={color} numberOfLines={1}>{label}</Text>
     </Pressable>
   );

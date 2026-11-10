@@ -15,6 +15,13 @@ export default function RootLayout() {
     initializeSession();
   }, [initializeSession]);
 
+  // iOS Safari ignores user-scalable=no for pinch gestures, so block the pinch itself.
+  useEffect(() => {
+    const preventZoom = (event: Event) => event.preventDefault();
+    document.addEventListener('gesturestart', preventZoom);
+    return () => document.removeEventListener('gesturestart', preventZoom);
+  }, []);
+
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return;
 

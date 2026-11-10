@@ -10,7 +10,7 @@ import { InputField } from '../src/components/primitives/InputField';
 import { StyledButton } from '../src/components/StyledButton';
 import { registerStaff } from '../src/services';
 import { useAuthStore } from '../src/state/useAuthStore';
-import { colors, shadows, spacing } from '../src/theme';
+import { colors, noBounce, shadows, spacing } from '../src/theme';
 import { useLayoutInsets } from '../src/hooks/useLayoutInsets';
 
 const titleOptions = ['Dr.', 'Nurse', 'None'];
@@ -71,14 +71,14 @@ export default function RegisterScreen() {
       <View style={[styles.header, { paddingTop: headerTop }]}>
         <Row gap="sm">
           <Pressable onPress={goBack} accessibilityRole="button" accessibilityLabel="Back" style={styles.iconButton}>
-            <Icon name="chevron-back" size={32} color={colors.textOnPrimary} />
+            <Icon name="chevron-back" size={26} color={colors.textOnPrimary} />
           </Pressable>
           <Text size="xxl" weight="bold" color={colors.textOnPrimary}>New staff member</Text>
         </Row>
       </View>
 
       <View style={styles.sheet}>
-        <ScrollView contentContainerStyle={styles.form} keyboardShouldPersistTaps="handled">
+        <ScrollView style={noBounce} contentContainerStyle={styles.form} keyboardShouldPersistTaps="handled" bounces={false}>
           <Stack gap="lg">
             <Stack gap="sm">
               <Text size="sm" weight="medium">Title</Text>

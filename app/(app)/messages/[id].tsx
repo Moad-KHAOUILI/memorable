@@ -43,7 +43,7 @@ export default function DirectMessageScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={{ height: topGap, backgroundColor: colors.primary }} />
+      <View style={{ height: topGap, backgroundColor: colors.surface }} />
       <View style={styles.header}>
         <Row gap="md">
           <Pressable
@@ -52,7 +52,7 @@ export default function DirectMessageScreen() {
             accessibilityLabel="Back to messages"
             style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
           >
-            <Icon name="chevron-back" size={30} color={colors.primary} />
+            <Icon name="chevron-back" size={26} color={colors.primary} />
           </Pressable>
           <Avatar name={conversation?.name ?? ''} />
           <View style={styles.name}>
@@ -63,7 +63,7 @@ export default function DirectMessageScreen() {
             accessibilityLabel="Call"
             style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
           >
-            <Icon name="call-outline" size={30} color={colors.text} />
+            <Icon name="call-outline" size={26} color={colors.text} />
           </Pressable>
         </Row>
       </View>

@@ -26,10 +26,10 @@ export function NotificationItem({ notification, onPress }: NotificationItemProp
           <Text size="sm" color={colors.textSecondary}>{notification.ago}</Text>
         </Stack>
         {notification.kind === 'medication' && (
-          <Icon name="alert-circle-outline" size={32} color={colors.warning} />
+          <Icon name="alert-circle-outline" size={26} color={colors.warning} />
         )}
         {notification.kind === 'stock' && (
-          <Icon name="alert-circle-outline" size={32} color={colors.orange} />
+          <Icon name="alert-circle-outline" size={26} color={colors.orange} />
         )}
       </Row>
     </Pressable>

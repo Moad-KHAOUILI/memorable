@@ -6,7 +6,7 @@ import { Icon, type IconName } from './primitives/Icon';
 import { InputField } from './primitives/InputField';
 import { Row } from './primitives/Row';
 import { Spinner } from './primitives/Spinner';
-import { colors, spacing } from '../theme';
+import { colors, noBounce, spacing } from '../theme';
 
 interface ChatViewProps {
   messages: ChatMessage[];
@@ -34,7 +34,8 @@ export function ChatView({ messages, onSend, myTone, theirTone, theirAvatarIcon,
     <View style={styles.container}>
       <ScrollView
         ref={scrollRef}
-        style={styles.messages}
+        style={[styles.messages, noBounce]}
+        bounces={false}
         contentContainerStyle={styles.messagesContent}
         onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}
       >
@@ -64,7 +65,7 @@ export function ChatView({ messages, onSend, myTone, theirTone, theirAvatarIcon,
       <View style={styles.inputBar}>
         <Row gap="sm">
           <Pressable accessibilityRole="button" accessibilityLabel="Attach a file" style={styles.iconButton}>
-            <Icon name="attach" size={28} color={colors.textSecondary} />
+            <Icon name="attach" size={24} color={colors.textSecondary} />
           </Pressable>
           <View style={styles.input}>
             <InputField
@@ -83,7 +84,7 @@ export function ChatView({ messages, onSend, myTone, theirTone, theirAvatarIcon,
             style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
             testID="chat-send"
           >
-            <Icon name="send" size={28} color={colors.primary} />
+            <Icon name="send" size={24} color={colors.primary} />
           </Pressable>
         </Row>
       </View>

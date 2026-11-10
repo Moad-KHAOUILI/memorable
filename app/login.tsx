@@ -15,7 +15,7 @@ import { StyledButton } from '../src/components/StyledButton';
 import { getStaffDisplayName, getStaffList } from '../src/services';
 import { useAuthStore } from '../src/state/useAuthStore';
 import type { Staff } from '../src/types';
-import { colors, shadows, spacing } from '../src/theme';
+import { colors, noBounce, shadows, spacing } from '../src/theme';
 
 const logoImage = require('../assets/images/logo.png');
 const backgroundImage = require('../assets/images/login-background.png');
@@ -67,7 +67,7 @@ export default function LoginScreen() {
 
   return (
     <Screen padding="lg" backgroundColor={colors.loginBackground} backgroundImage={backgroundImage}>
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      <ScrollView style={noBounce} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" bounces={false}>
         <Stack gap="lg">
           <Image source={logoImage} style={styles.logo} resizeMode="contain" accessibilityLabel="Memorable Care Center" />
 
@@ -133,7 +133,7 @@ export default function LoginScreen() {
                 <Row justify="space-between" gap="md">
                   <Row gap="md" flex={1}>
                     <View style={styles.cardIcon}>
-                      <Icon name="person-outline" size={36} color={colors.text} />
+                      <Icon name="person-outline" size={28} color={colors.text} />
                     </View>
                     <Stack flex={1}>
                       <Text size="xl" weight="medium">{lastStaff !== undefined ? getStaffDisplayName(lastStaff) : ''}</Text>
@@ -141,7 +141,7 @@ export default function LoginScreen() {
                     </Stack>
                   </Row>
                   <View style={styles.switchIcon} accessibilityLabel="Switch staff member">
-                    <Icon name="people-outline" size={36} color={colors.text} />
+                    <Icon name="people-outline" size={28} color={colors.text} />
                   </View>
                 </Row>
               </Card>

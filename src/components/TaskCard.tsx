@@ -22,13 +22,13 @@ export function TaskCard({ task, onPress }: TaskCardProps) {
         </Stack>
         {task.priority === 'warning' && (
           <View style={styles.warningIcon} accessibilityLabel="Due soon">
-            <Icon name="alert-circle-outline" size={36} color={colors.warning} />
+            <Icon name="alert-circle-outline" size={26} color={colors.warning} />
           </View>
         )}
       </Row>
       {task.priority === 'urgent' && (
         <View style={styles.urgentIcon} accessibilityLabel="Urgent">
-          <Icon name="alert-circle" size={36} color={colors.danger} />
+          <Icon name="alert-circle" size={26} color={colors.danger} />
         </View>
       )}
     </Card>
@@ -36,11 +36,11 @@ export function TaskCard({ task, onPress }: TaskCardProps) {
 }
 
 const styles = StyleSheet.create({
-  warningIcon: { paddingRight: 16 },
+  warningIcon: { paddingRight: 14 },
   urgentIcon: {
     position: 'absolute',
-    top: -12,
-    right: -8,
+    top: -9,
+    right: -6,
     backgroundColor: colors.surface,
     borderRadius: 999,
   },

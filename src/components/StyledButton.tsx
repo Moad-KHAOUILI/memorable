@@ -26,7 +26,7 @@ const labelColors: Record<ButtonVariant, string> = {
 };
 
 const textSizes = { lg: 'xl', md: 'lg', sm: 'md' } as const;
-const iconSizes = { lg: 30, md: 28, sm: 18 } as const;
+const iconSizes = { lg: 24, md: 22, sm: 16 } as const;
 
 export function StyledButton({
   label,
@@ -77,22 +77,22 @@ export function StyledButton({
 const styles = StyleSheet.create({
   base: { alignItems: 'center', justifyContent: 'center' },
   lg: {
-    minHeight: 56,
-    minWidth: 240,
+    minHeight: 50,
+    minWidth: 220,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.xxl,
     borderRadius: 999,
   },
   md: {
-    minHeight: 44,
-    minWidth: 180,
+    minHeight: 40,
+    minWidth: 160,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.xl,
     borderRadius: 999,
   },
   sm: {
-    minHeight: 40,
-    minWidth: 120,
+    minHeight: 34,
+    minWidth: 104,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
     borderRadius: 6,

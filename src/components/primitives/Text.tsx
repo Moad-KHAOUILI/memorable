@@ -44,13 +44,13 @@ const styles = StyleSheet.create({
   base: {
     color: colors.text,
   },
-  // iOS-style type scale (measured from the Figma frames)
-  sm: { fontSize: 13, lineHeight: 18 },
-  md: { fontSize: 15, lineHeight: 20 },
-  lg: { fontSize: 17, lineHeight: 22 },
-  xl: { fontSize: 22, lineHeight: 28 },
-  xxl: { fontSize: 32, lineHeight: 38 },
-  display: { fontSize: 44, lineHeight: 52 },
+  // iOS-style type scale, based on the Figma frames but one step smaller
+  sm: { fontSize: 12, lineHeight: 16 },
+  md: { fontSize: 14, lineHeight: 19 },
+  lg: { fontSize: 15, lineHeight: 20 },
+  xl: { fontSize: 18, lineHeight: 23 },
+  xxl: { fontSize: 26, lineHeight: 32 },
+  display: { fontSize: 36, lineHeight: 42 },
   normal: { fontWeight: '400' },
   medium: { fontWeight: '500' },
   bold: { fontWeight: '700' },

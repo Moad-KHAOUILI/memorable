@@ -46,7 +46,7 @@ export function PageHeader({
               accessibilityLabel="Back"
               style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
             >
-              <Icon name="chevron-back" size={32} color={colors.textOnPrimary} />
+              <Icon name="chevron-back" size={26} color={colors.textOnPrimary} />
             </Pressable>
           )}
           <Stack flex={1}>
@@ -63,7 +63,7 @@ export function PageHeader({
             accessibilityLabel={actionLabel}
             style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
           >
-            <Icon name={actionIcon} size={40} color={colors.textOnPrimary} />
+            <Icon name={actionIcon} size={30} color={colors.textOnPrimary} />
           </Pressable>
         )}
       </Row>

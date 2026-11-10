@@ -1,5 +1,5 @@
 import { Image, ScrollView, View, StyleSheet, type ImageSourcePropType } from 'react-native';
-import { colors, spacing } from '../../theme';
+import { colors, noBounce, spacing } from '../../theme';
 
 interface ScreenProps {
   children: React.ReactNode;
@@ -35,7 +35,8 @@ export function Screen({
 
   return (
     <ScrollView
-      style={[styles.scroll, { backgroundColor }]}
+      style={[styles.scroll, noBounce, { backgroundColor }]}
+      bounces={false}
       contentContainerStyle={[styles.content, styles[padding]]}
     >
       {children}

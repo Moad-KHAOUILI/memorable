@@ -14,7 +14,7 @@ import { RosterItem } from '../../src/components/RosterItem';
 import { getTasksForDay, getRoster, markAdministered, rosterSlots } from '../../src/services';
 import { useAuthStore } from '../../src/state/useAuthStore';
 import type { RosterEntry, Task } from '../../src/types';
-import { colors, shadows, spacing } from '../../src/theme';
+import { colors, noBounce, shadows, spacing } from '../../src/theme';
 import { formatHeaderDate, toDateKey } from '../../src/utils/date';
 import { useLayoutInsets } from '../../src/hooks/useLayoutInsets';
 
@@ -57,7 +57,7 @@ export default function HomeScreen() {
         onLayout={(event) => setScrollHeight(event.nativeEvent.layout.height)}
       >
         {/* The header (index 0) sticks to the top while the grey panel scrolls up over it. */}
-        <ScrollView style={styles.scroll} stickyHeaderIndices={[0]}>
+        <ScrollView style={[styles.scroll, noBounce]} stickyHeaderIndices={[0]} bounces={false}>
           {/* Header with today's tasks */}
           <View style={[styles.header, { paddingTop: headerTop - topGap }]}>
             <Stack gap="lg">
@@ -75,7 +75,7 @@ export default function HomeScreen() {
                   style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
                   testID="settings-button"
                 >
-                  <Icon name="settings-outline" size={40} color={colors.textOnPrimary} />
+                  <Icon name="settings-outline" size={30} color={colors.textOnPrimary} />
                 </Pressable>
               </Row>
 

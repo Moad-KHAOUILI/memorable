@@ -61,10 +61,10 @@ export default function SettingsScreen() {
               >
                 <Row gap="lg" justify="space-between">
                   <Row gap="lg" flex={1}>
-                    <Icon name={item.icon} size={36} color={colors.navIcon} />
+                    <Icon name={item.icon} size={28} color={colors.navIcon} />
                     <Text size="xl">{item.label}</Text>
                   </Row>
-                  <Icon name="chevron-forward" size={22} color={colors.textSecondary} />
+                  <Icon name="chevron-forward" size={18} color={colors.textSecondary} />
                 </Row>
               </Pressable>
             ))}
