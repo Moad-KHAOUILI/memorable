@@ -6,7 +6,6 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useAuthStore } from '../src/state/useAuthStore';
 import { colors } from '../src/theme';
-import { showViewportDebug } from '../src/utils/viewportDebug';
 
 export default function RootLayout() {
   const initializeSession = useAuthStore((state) => state.initializeSession);
@@ -15,12 +14,6 @@ export default function RootLayout() {
   useEffect(() => {
     initializeSession();
   }, [initializeSession]);
-
-  // TEMPORARY: show measured viewport sizes in the installed app to fix the white strip at the bottom.
-  useEffect(() => {
-    if (!window.matchMedia('(display-mode: standalone)').matches) return;
-    return showViewportDebug();
-  }, []);
 
   // iOS Safari ignores user-scalable=no for pinch gestures, so block the pinch itself.
   useEffect(() => {

@@ -43,17 +43,10 @@ body {
 #root {
   height: 100%;
 }
-/* Installed on the home screen: iOS makes 100% too short when the status bar is translucent.
-   (Being investigated with the temporary viewport debug box.) */
-@media (display-mode: standalone) {
-  body {
-    bottom: auto;
-    height: 100vh;
-  }
-  #root {
-    height: 100vh;
-  }
-}
+/* Installed on the iPhone home screen with a translucent status bar, iOS gives the page a window that is
+   one status bar height shorter than the screen (measured: 848 of 896px) and never draws the app in the
+   bottom strip; only this background colour shows there. The app is sized to that window (100%), the
+   navigation bar sits right above the strip, and screens can change the colour (see useStripColor). */
 /* Native-app feel: no text selection, no long-press menu, no grey tap flash. Text fields stay editable. */
 * {
   -webkit-user-select: none;

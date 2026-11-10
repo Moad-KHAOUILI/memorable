@@ -14,14 +14,19 @@ import { InputField } from '../src/components/primitives/InputField';
 import { StyledButton } from '../src/components/StyledButton';
 import { getStaffDisplayName, getStaffList } from '../src/services';
 import { useAuthStore } from '../src/state/useAuthStore';
+import { useStripColor } from '../src/hooks/useStripColor';
 import type { Staff } from '../src/types';
 import { colors, noBounce, shadows, spacing } from '../src/theme';
 
 const logoImage = require('../assets/images/logo.png');
 const backgroundImage = require('../assets/images/login-background.png');
+// Average colour of the bottom edge of the background photo.
+const LOGIN_STRIP_COLOR = '#4E5966';
 
 export default function LoginScreen() {
   const { login, isLoading, isAuthenticated, lastStaff, setLastStaff } = useAuthStore();
+  // Bottom strip of the installed iPhone app matches the bottom of the background photo.
+  useStripColor(LOGIN_STRIP_COLOR);
   const [staffList, setStaffList] = useState<Staff[]>([]);
   const [isPicking, setIsPicking] = useState(false);
   const [password, setPassword] = useState('');
