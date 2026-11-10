@@ -17,7 +17,7 @@ const tabs: NavTab[] = [
   { label: 'Messages', href: '/messages', path: '/messages', icon: 'chatbubble-ellipses-outline', activeIcon: 'chatbubble-ellipses' },
   { label: 'Tasks', href: '/tasks', path: '/tasks', icon: 'document-text-outline', activeIcon: 'document-text' },
   { label: 'Patients', href: '/patients', path: '/patients', icon: 'people-outline', activeIcon: 'people' },
-  { label: 'Notifications', href: '/notifications', path: '/notifications', icon: 'notifications-outline', activeIcon: 'notifications' },
+  { label: 'Alerts', href: '/notifications', path: '/notifications', icon: 'notifications-outline', activeIcon: 'notifications' },
 ];
 
 function isActive(tab: NavTab, pathname: string): boolean {

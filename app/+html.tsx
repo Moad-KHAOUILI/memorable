@@ -26,7 +26,7 @@ html, body {
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
-  background-color: #0A84FF;
+  background-color: #FFFFFF;
 }
 body {
   position: fixed;
@@ -35,6 +35,5 @@ body {
 }
 #root {
   height: 100%;
-  height: 100dvh;
 }
 `;

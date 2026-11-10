@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet } from 'react-native';
 import { Text } from './Text';
 import { Icon, type IconName } from './Icon';
-import { colors } from '../../theme';
+import { colors, spacing } from '../../theme';
 
 interface NavItemProps {
   label: string;
@@ -10,32 +10,31 @@ interface NavItemProps {
   icon?: IconName;
 }
 
-// With an icon the label is only used for screen readers (the design shows icons only).
+// Tab with an icon and a label underneath; the active tab is shown in the primary colour.
 export function NavItem({ label, onPress, active = false, icon }: NavItemProps) {
+  const color = active ? colors.primary : colors.text;
+
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [styles.base, active && styles.active, pressed && styles.pressed]}
+      style={({ pressed }) => [styles.base, pressed && styles.pressed]}
       accessibilityRole="tab"
       accessibilityLabel={label}
       accessibilityState={{ selected: active }}
     >
-      {icon !== undefined ? (
-        <Icon name={icon} size={28} color={colors.navIcon} />
-      ) : (
-        <Text size="md" weight={active ? 'bold' : 'normal'}>{label}</Text>
-      )}
+      {icon !== undefined && <Icon name={icon} size={26} color={color} />}
+      <Text size="sm" weight="bold" color={color} numberOfLines={1}>{label}</Text>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   base: {
-    minWidth: 48,
+    flex: 1,
     minHeight: 48,
     alignItems: 'center',
     justifyContent: 'center',
+    gap: spacing.xs,
   },
-  active: {},
-  pressed: { opacity: 0.6, transform: [{ scale: 0.92 }] },
+  pressed: { opacity: 0.6, transform: [{ scale: 0.95 }] },
 });
