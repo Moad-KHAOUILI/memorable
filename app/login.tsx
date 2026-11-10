@@ -40,7 +40,7 @@ export default function LoginScreen() {
         </Row>
 
         {/* Remembered staff member */}
-        <Card>
+        <Card elevated>
           <Row justify="space-between" gap="md">
             <Row gap="md" flex={1}>
               <View style={styles.cardIcon}>
@@ -58,7 +58,7 @@ export default function LoginScreen() {
 
         <Stack gap="lg" align="center">
           <StyledButton label="Log in with Face ID" onPress={handleLogin} testID="login-button" />
-          <StyledButton label="I can't log in" size="lg" underline onPress={() => {}} testID="help-button" />
+          <StyledButton label="I can't log in" size="md" underline onPress={() => {}} testID="help-button" />
         </Stack>
 
         <View />
@@ -68,6 +68,6 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  cardIcon: { paddingLeft: 16, paddingVertical: 20 },
+  cardIcon: { paddingLeft: 20, paddingVertical: 24 },
   switchButton: { minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
 });

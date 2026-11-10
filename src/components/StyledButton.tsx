@@ -11,7 +11,7 @@ interface StyledButtonProps {
   label: string;
   onPress: () => void;
   variant?: ButtonVariant;
-  size?: 'lg' | 'sm';
+  size?: 'lg' | 'md' | 'sm';
   icon?: IconName;
   underline?: boolean;
   isLoading?: boolean;
@@ -24,6 +24,9 @@ const labelColors: Record<ButtonVariant, string> = {
   success: colors.textOnPrimary,
   danger: colors.textOnPrimary,
 };
+
+const textSizes = { lg: 'xl', md: 'lg', sm: 'md' } as const;
+const iconSizes = { lg: 30, md: 28, sm: 18 } as const;
 
 export function StyledButton({
   label,
@@ -56,9 +59,9 @@ export function StyledButton({
         <Spinner size="small" color={labelColor} />
       ) : (
         <Row gap="md">
-          {icon !== undefined && <Icon name={icon} size={size === 'lg' ? 32 : 20} color={labelColor} />}
+          {icon !== undefined && <Icon name={icon} size={iconSizes[size]} color={labelColor} />}
           <Text
-            size={size === 'lg' ? 'xl' : 'md'}
+            size={textSizes[size]}
             weight={size === 'lg' ? 'bold' : 'medium'}
             color={labelColor}
             underline={underline}
@@ -74,8 +77,16 @@ export function StyledButton({
 const styles = StyleSheet.create({
   base: { alignItems: 'center', justifyContent: 'center' },
   lg: {
-    minHeight: 52,
+    minHeight: 56,
+    minWidth: 240,
     paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xxl,
+    borderRadius: 999,
+  },
+  md: {
+    minHeight: 44,
+    minWidth: 180,
+    paddingVertical: spacing.sm,
     paddingHorizontal: spacing.xl,
     borderRadius: 999,
   },
@@ -94,6 +105,6 @@ const styles = StyleSheet.create({
   },
   success: { backgroundColor: colors.success },
   danger: { backgroundColor: colors.danger },
-  pressed: { opacity: 0.7 },
+  pressed: { opacity: 0.7, transform: [{ scale: 0.97 }] },
   disabled: { opacity: 0.6 },
 });

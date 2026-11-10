@@ -15,7 +15,7 @@ import { TaskCard } from '../../src/components/TaskCard';
 import { RosterItem } from '../../src/components/RosterItem';
 import { getTasks, getRoster, getCurrentStaff, markAdministered, rosterSlots } from '../../src/services';
 import type { RosterEntry, Staff, Task } from '../../src/types';
-import { colors, spacing } from '../../src/theme';
+import { colors, shadows, spacing } from '../../src/theme';
 
 function formatToday(): string {
   const today = new Date();
@@ -55,18 +55,22 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.page}>
-      <Screen padding="none">
+      <Screen padding="none" backgroundColor={colors.backgroundMuted}>
         {/* Header with today's tasks */}
         <View style={styles.header}>
           <Stack gap="lg">
             <Row justify="space-between" align="flex-start">
               <Stack flex={1}>
-                <Text size="lg" color={colors.textOnPrimary}>{formatToday()}</Text>
+                <Text size="md" weight="medium" color={colors.textOnPrimary}>{formatToday()}</Text>
                 <Text size="xxl" weight="bold" color={colors.textOnPrimary}>
                   {staff !== undefined ? `Welcome ${staff.title.replace('.', '')} ${staff.firstName}` : 'Welcome'}
                 </Text>
               </Stack>
-              <Pressable accessibilityRole="button" accessibilityLabel="Settings" style={styles.iconButton}>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Settings"
+                style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
+              >
                 <Icon name="settings-outline" size={40} color={colors.textOnPrimary} />
               </Pressable>
             </Row>
@@ -76,7 +80,7 @@ export default function HomeScreen() {
                 <Text size="lg" color={colors.textOnPrimary}>Tasks</Text>
                 <Badge label={String(tasks.length)} variant="count" />
               </Row>
-              <Pressable accessibilityRole="link">
+              <Pressable accessibilityRole="link" style={({ pressed }) => pressed && styles.pressed}>
                 <Text size="lg" color={colors.textOnPrimary} underline>See All</Text>
               </Pressable>
             </Row>
@@ -95,11 +99,11 @@ export default function HomeScreen() {
 
         {/* Help */}
         <View style={styles.helpSection}>
-          <StyledButton label="Need help ?" icon="headset-outline" variant="secondary" onPress={() => {}} />
+          <StyledButton label="Need help ?" icon="headset-outline" variant="secondary" size="md" onPress={() => {}} />
         </View>
 
         {/* Medication roster */}
-        <Stack padding="lg" gap="md">
+        <Stack padding="lg" gap="lg">
           <Text size="xxl" weight="bold" align="center">Your Medication Roster</Text>
           {error !== '' && <Text color={colors.danger} align="center">{error}</Text>}
           {rosterSlots.map(({ slot, label, time }) => {
@@ -108,16 +112,18 @@ export default function HomeScreen() {
 
             return (
               <Stack key={slot} gap="sm">
-                <Row gap="md">
+                <Row gap="md" align="flex-end">
                   <Text size="xl" weight="bold">{label}</Text>
                   <Text size="lg" color={colors.textSecondary}>{time}</Text>
                 </Row>
-                {entries.map((entry, index) => (
-                  <Stack key={entry.id} gap="sm">
-                    {index > 0 && <Divider />}
-                    <RosterItem entry={entry} onAdminister={() => handleAdminister(entry.id)} />
-                  </Stack>
-                ))}
+                <View style={styles.rosterGroup}>
+                  {entries.map((entry, index) => (
+                    <Stack key={entry.id} gap="md">
+                      {index > 0 && <Divider />}
+                      <RosterItem entry={entry} onAdminister={() => handleAdminister(entry.id)} />
+                    </Stack>
+                  ))}
+                </View>
               </Stack>
             );
           })}
@@ -140,15 +146,23 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.primary,
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xxl,
-    paddingBottom: spacing.xxl,
+    paddingTop: 44,
+    paddingBottom: spacing.xxl + spacing.lg,
   },
   iconButton: { minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
+  pressed: { opacity: 0.6 },
+  rosterGroup: {
+    backgroundColor: colors.surface,
+    borderRadius: 16,
+    padding: spacing.md,
+    gap: spacing.md,
+    ...shadows.soft,
+  },
   helpSection: {
     backgroundColor: colors.surfaceMuted,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    marginTop: -spacing.lg,
+    marginTop: -(spacing.xxl - spacing.sm),
     paddingVertical: spacing.xl,
     alignItems: 'center',
   },

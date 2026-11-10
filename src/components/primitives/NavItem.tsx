@@ -15,13 +15,13 @@ export function NavItem({ label, onPress, active = false, icon }: NavItemProps) 
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.base, active && styles.active]}
+      style={({ pressed }) => [styles.base, active && styles.active, pressed && styles.pressed]}
       accessibilityRole="tab"
       accessibilityLabel={label}
       accessibilityState={{ selected: active }}
     >
       {icon !== undefined ? (
-        <Icon name={icon} size={36} color={colors.navIcon} />
+        <Icon name={icon} size={40} color={colors.navIcon} />
       ) : (
         <Text size="md" weight={active ? 'bold' : 'normal'}>{label}</Text>
       )}
@@ -37,4 +37,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   active: {},
+  pressed: { opacity: 0.6, transform: [{ scale: 0.92 }] },
 });
