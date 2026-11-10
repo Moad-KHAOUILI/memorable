@@ -10,6 +10,15 @@ export default function RootLayout() {
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return;
 
+    // In development, remove the service worker so the browser never serves a cached old version.
+    if (__DEV__) {
+      navigator.serviceWorker
+        .getRegistrations()
+        .then((registrations) => registrations.forEach((registration) => registration.unregister()))
+        .catch(() => {});
+      return;
+    }
+
     navigator.serviceWorker.register('/sw.js').catch(() => {});
   }, []);
 

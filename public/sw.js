@@ -1,4 +1,4 @@
-const CACHE_NAME = 'memorable-v1';
+const CACHE_NAME = 'memorable-v2';
 
 const STATIC_ASSETS = [
   '/',
@@ -30,17 +30,16 @@ self.addEventListener('fetch', (event) => {
 
   if (url.origin !== location.origin) return;
 
+  // Network first: always try to get the latest version, use the cache only when offline.
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(event.request).then((response) => {
-        if (!response.ok) return response;
-
-        const responseClone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+    fetch(event.request)
+      .then((response) => {
+        if (response.ok) {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+        }
         return response;
-      });
-    }),
+      })
+      .catch(() => caches.match(event.request)),
   );
 });
