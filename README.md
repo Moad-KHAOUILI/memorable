@@ -110,15 +110,14 @@ The app is installable (manifest + service worker), works in a phone-width layou
 
 ## Demo Login
 
-Open the [live PWA](https://memorable-nu.vercel.app/), tap your name in the staff list and use:
+Open the [live PWA](https://memorable-nu.vercel.app/), tap a name in the staff list on the login screen and enter the password:
 
 | | |
 |---|---|
-| **Staff member** | TODO — name of the demo account |
-| **Email** | TODO |
-| **Password** | TODO |
+| **Staff member** | Any staff member in the list, e.g. **Dr. Niels Jacobs** |
+| **Password** | `aaaaaaaa` (the same for every demo staff account) |
 
-You can also create your own account with **Add new staff member** in the staff list on the login screen.
+No email address is needed: you choose the staff member from the list. You can also create your own account with **Add new staff member** at the bottom of the staff list. All staff accounts are fictional demo accounts.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
