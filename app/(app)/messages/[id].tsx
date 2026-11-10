@@ -9,11 +9,12 @@ import { ChatView } from '../../../src/components/ChatView';
 import { getConversation, getMessages, sendMessage } from '../../../src/services';
 import type { ChatMessage, Conversation } from '../../../src/types';
 import { colors, spacing } from '../../../src/theme';
-import { useLayoutInsets } from '../../../src/hooks/useLayoutInsets';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function DirectMessageScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { topGap } = useLayoutInsets();
+  // Space for the status bar if the app draws under it (0 with the normal status bar).
+  const { top: statusBarHeight } = useSafeAreaInsets();
   const [conversation, setConversation] = useState<Conversation | undefined>(undefined);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [error, setError] = useState('');
@@ -43,7 +44,7 @@ export default function DirectMessageScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={{ height: topGap, backgroundColor: colors.surface }} />
+      <View style={{ height: statusBarHeight, backgroundColor: colors.surface }} />
       <View style={styles.header}>
         <Row gap="md">
           <Pressable

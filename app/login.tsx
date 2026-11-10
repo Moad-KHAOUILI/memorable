@@ -14,19 +14,14 @@ import { InputField } from '../src/components/primitives/InputField';
 import { StyledButton } from '../src/components/StyledButton';
 import { getStaffDisplayName, getStaffList } from '../src/services';
 import { useAuthStore } from '../src/state/useAuthStore';
-import { useFullScreenBackdrop } from '../src/hooks/useFullScreenBackdrop';
 import type { Staff } from '../src/types';
 import { colors, noBounce, shadows, spacing } from '../src/theme';
 
 const logoImage = require('../assets/images/logo.png');
 const backgroundImage = require('../assets/images/login-background.png');
-// Pixel size of login-background.png.
-const BACKGROUND_SIZE = { width: 440, height: 956 };
 
 export default function LoginScreen() {
   const { login, isLoading, isAuthenticated, lastStaff, setLastStaff } = useAuthStore();
-  // Installed iPhone app: the photo is the page background so it also fills the bottom strip.
-  const photoIsBackdrop = useFullScreenBackdrop(backgroundImage, BACKGROUND_SIZE);
   const [staffList, setStaffList] = useState<Staff[]>([]);
   const [isPicking, setIsPicking] = useState(false);
   const [password, setPassword] = useState('');
@@ -73,8 +68,8 @@ export default function LoginScreen() {
   return (
     <Screen
       padding="lg"
-      backgroundColor={photoIsBackdrop ? 'transparent' : colors.loginBackground}
-      backgroundImage={photoIsBackdrop ? undefined : backgroundImage}
+      backgroundColor={colors.loginBackground}
+      backgroundImage={backgroundImage}
     >
       <ScrollView style={noBounce} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" bounces={false}>
         <Stack gap="lg">

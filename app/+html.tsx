@@ -14,8 +14,9 @@ export default function Root({ children }: PropsWithChildren) {
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
         />
-        {/* Installed app: transparent status bar, so the screens (login photo, blue headers) fill the top of the screen. */}
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        {/* Installed app: normal white status bar. (A translucent one makes iOS cut the app 48px short
+            at the bottom, leaving a white strip under the navigation bar.) */}
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <ScrollViewStyleReset />
         <style dangerouslySetInnerHTML={{ __html: appShellStyles }} />
       </head>
@@ -49,10 +50,6 @@ body {
     background-color: #D9DEE5;
   }
 }
-/* Installed on the iPhone home screen with a translucent status bar, iOS gives the page a window that is
-   one status bar height shorter than the screen (measured: 848 of 896px) and never draws the app in the
-   bottom strip; only this background colour shows there. The app is sized to that window (100%), the
-   navigation bar sits right above the strip, and the login screen shows its photo there via the page background (see useFullScreenBackdrop). */
 /* Native-app feel: no text selection, no long-press menu, no grey tap flash. Text fields stay editable. */
 * {
   -webkit-user-select: none;
