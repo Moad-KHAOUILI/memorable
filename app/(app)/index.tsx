@@ -47,8 +47,8 @@ export default function HomeScreen() {
   };
 
   return (
-    <Screen padding="none" backgroundColor={colors.backgroundMuted}>
-      {/* Header with today's tasks */}
+    <View style={styles.page}>
+      {/* Header with today's tasks — stays in place */}
       <View style={styles.header}>
         <Stack gap="lg">
           <Row justify="space-between" align="flex-start">
@@ -96,45 +96,50 @@ export default function HomeScreen() {
         </Stack>
       </View>
 
-      {/* Help */}
-      <View style={styles.helpSection}>
-        <StyledButton
-          label="Need help ?"
-          icon="headset-outline"
-          variant="secondary"
-          size="md"
-          onPress={() => router.push('/help')}
-          testID="help-button"
-        />
+      {/* Only the grey part below the header scrolls */}
+      <View style={styles.scrollArea}>
+        <Screen padding="none" backgroundColor={colors.backgroundMuted}>
+          {/* Help */}
+          <View style={styles.helpSection}>
+            <StyledButton
+              label="Need help ?"
+              icon="headset-outline"
+              variant="secondary"
+              size="md"
+              onPress={() => router.push('/help')}
+              testID="help-button"
+            />
+          </View>
+
+          {/* Medication roster */}
+          <Stack padding="lg" gap="lg">
+            <Text size="xxl" weight="bold" align="center">Your Medication Roster</Text>
+            {error !== '' && <Text color={colors.danger} align="center">{error}</Text>}
+            {rosterSlots.map(({ slot, label, time }) => {
+              const entries = roster.filter((entry) => entry.slot === slot);
+              if (entries.length === 0) return null;
+
+              return (
+                <Stack key={slot} gap="sm">
+                  <Row gap="md" align="flex-end">
+                    <Text size="xl" weight="bold">{label}</Text>
+                    <Text size="lg" color={colors.textSecondary}>{time}</Text>
+                  </Row>
+                  <View style={styles.rosterGroup}>
+                    {entries.map((entry, index) => (
+                      <Stack key={entry.id} gap="md">
+                        {index > 0 && <Divider />}
+                        <RosterItem entry={entry} onAdminister={() => handleAdminister(entry.id)} />
+                      </Stack>
+                    ))}
+                  </View>
+                </Stack>
+              );
+            })}
+          </Stack>
+        </Screen>
       </View>
-
-      {/* Medication roster */}
-      <Stack padding="lg" gap="lg">
-        <Text size="xxl" weight="bold" align="center">Your Medication Roster</Text>
-        {error !== '' && <Text color={colors.danger} align="center">{error}</Text>}
-        {rosterSlots.map(({ slot, label, time }) => {
-          const entries = roster.filter((entry) => entry.slot === slot);
-          if (entries.length === 0) return null;
-
-          return (
-            <Stack key={slot} gap="sm">
-              <Row gap="md" align="flex-end">
-                <Text size="xl" weight="bold">{label}</Text>
-                <Text size="lg" color={colors.textSecondary}>{time}</Text>
-              </Row>
-              <View style={styles.rosterGroup}>
-                {entries.map((entry, index) => (
-                  <Stack key={entry.id} gap="md">
-                    {index > 0 && <Divider />}
-                    <RosterItem entry={entry} onAdminister={() => handleAdminister(entry.id)} />
-                  </Stack>
-                ))}
-              </View>
-            </Stack>
-          );
-        })}
-      </Stack>
-    </Screen>
+    </View>
   );
 }
 
@@ -154,11 +159,18 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     ...shadows.soft,
   },
-  helpSection: {
-    backgroundColor: colors.surfaceMuted,
+  page: { flex: 1, backgroundColor: colors.primary },
+  // Rounded grey panel that scrolls under the fixed blue header.
+  scrollArea: {
+    flex: 1,
+    marginTop: -(spacing.xxl - spacing.sm),
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    marginTop: -(spacing.xxl - spacing.sm),
+    overflow: 'hidden',
+    backgroundColor: colors.backgroundMuted,
+  },
+  helpSection: {
+    backgroundColor: colors.surfaceMuted,
     paddingVertical: spacing.xl,
     alignItems: 'center',
   },
