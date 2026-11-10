@@ -1,4 +1,5 @@
 import { View, StyleSheet } from 'react-native';
+import { spacing } from '../../theme';
 
 interface RowProps {
   children: React.ReactNode;
@@ -6,6 +7,7 @@ interface RowProps {
   align?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
   justify?: 'flex-start' | 'center' | 'flex-end' | 'space-between';
   wrap?: boolean;
+  flex?: number;
 }
 
 export function Row({
@@ -14,6 +16,7 @@ export function Row({
   align = 'center',
   justify = 'flex-start',
   wrap = false,
+  flex,
 }: RowProps) {
   return (
     <View
@@ -22,6 +25,7 @@ export function Row({
         styles[`gap_${gap}` as keyof typeof styles],
         { alignItems: align, justifyContent: justify },
         wrap && styles.wrap,
+        flex !== undefined && { flex },
       ]}
     >
       {children}
@@ -33,7 +37,7 @@ const styles = StyleSheet.create({
   base: { flexDirection: 'row' },
   wrap: { flexWrap: 'wrap' },
   gap_none: {},
-  gap_sm: {},
-  gap_md: {},
-  gap_lg: {},
+  gap_sm: { gap: spacing.sm },
+  gap_md: { gap: spacing.md },
+  gap_lg: { gap: spacing.lg },
 });

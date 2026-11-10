@@ -1,4 +1,5 @@
 import { View, StyleSheet } from 'react-native';
+import { colors, spacing } from '../../theme';
 
 interface NavProps {
   children: React.ReactNode;
@@ -9,5 +10,13 @@ export function Nav({ children }: NavProps) {
 }
 
 const styles = StyleSheet.create({
-  base: { flexDirection: 'row' },
+  base: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    backgroundColor: colors.surface,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
 });

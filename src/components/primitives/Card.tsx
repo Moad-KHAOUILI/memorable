@@ -1,4 +1,5 @@
 import { View, Pressable, StyleSheet } from 'react-native';
+import { colors } from '../../theme';
 
 interface CardProps {
   children: React.ReactNode;
@@ -8,7 +9,7 @@ interface CardProps {
 export function Card({ children, onPress }: CardProps) {
   if (onPress !== undefined) {
     return (
-      <Pressable onPress={onPress} style={styles.base}>
+      <Pressable onPress={onPress} style={styles.base} accessibilityRole="button">
         {children}
       </Pressable>
     );
@@ -18,5 +19,8 @@ export function Card({ children, onPress }: CardProps) {
 }
 
 const styles = StyleSheet.create({
-  base: {},
+  base: {
+    backgroundColor: colors.surface,
+    borderRadius: 20,
+  },
 });

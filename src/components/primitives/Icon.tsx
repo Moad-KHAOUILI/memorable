@@ -1,10 +1,10 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet } from 'react-native';
 
-type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
+export type IconName = React.ComponentProps<typeof Ionicons>['name'];
 
 interface IconProps {
-  name: IoniconsName;
+  name: IconName;
   size?: number;
   color?: string;
 }

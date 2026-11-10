@@ -1,29 +1,155 @@
-import { useAuthStore } from '../../src/state/useAuthStore';
+import { useEffect, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Screen } from '../../src/components/primitives/Screen';
 import { Stack } from '../../src/components/primitives/Stack';
+import { Row } from '../../src/components/primitives/Row';
 import { Text } from '../../src/components/primitives/Text';
-import { EmptyState } from '../../src/components/primitives/EmptyState';
+import { Icon } from '../../src/components/primitives/Icon';
+import { Badge } from '../../src/components/primitives/Badge';
+import { Divider } from '../../src/components/primitives/Divider';
+import { Spinner } from '../../src/components/primitives/Spinner';
+import { Nav } from '../../src/components/primitives/Nav';
+import { NavItem } from '../../src/components/primitives/NavItem';
 import { StyledButton } from '../../src/components/StyledButton';
-import {Badge} from "@/components/primitives";
+import { TaskCard } from '../../src/components/TaskCard';
+import { RosterItem } from '../../src/components/RosterItem';
+import { getTasks, getRoster, getCurrentStaff, markAdministered, rosterSlots } from '../../src/services';
+import type { RosterEntry, Staff, Task } from '../../src/types';
+import { colors, spacing } from '../../src/theme';
+
+function formatToday(): string {
+  const today = new Date();
+  const weekday = today.toLocaleDateString('en-GB', { weekday: 'long' });
+  const dayMonth = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+  return `${weekday}, ${dayMonth}`.toUpperCase();
+}
 
 export default function HomeScreen() {
-  const { user, logout } = useAuthStore();
+  const [staff, setStaff] = useState<Staff | undefined>(undefined);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [roster, setRoster] = useState<RosterEntry[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    Promise.all([getCurrentStaff(), getTasks(), getRoster()])
+      .then(([currentStaff, taskList, rosterList]) => {
+        setStaff(currentStaff);
+        setTasks(taskList);
+        setRoster(rosterList);
+      })
+      .catch(() => setError('Could not load your data. Please try again.'))
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  const handleAdminister = async (id: string) => {
+    try {
+      await markAdministered(id);
+      setRoster((current) =>
+        current.map((entry) => (entry.id === id ? { ...entry, status: 'administered' } : entry)),
+      );
+    } catch {
+      setError('Could not save. Please try again.');
+    }
+  };
 
   return (
-    <Screen padding="lg">
-      <Stack gap="lg">
-        <Text size="xl" weight="bold">
-          {user !== null ? `Welcome, ${user.name}` : 'Welcome'}
-        </Text>
-        <Text>Your items will appear here once you connect Supabase.</Text>
-        <Badge label={'Succes badge'} variant={"success"} />
-        <EmptyState
-          title="No items yet"
-          description="Implement getItems() in your itemService to load data."
-        />
-        <StyledButton label="Log out" onPress={logout} variant="secondary" />
-      </Stack>
-    </Screen>
+    <View style={styles.page}>
+      <Screen padding="none">
+        {/* Header with today's tasks */}
+        <View style={styles.header}>
+          <Stack gap="lg">
+            <Row justify="space-between" align="flex-start">
+              <Stack flex={1}>
+                <Text size="lg" color={colors.textOnPrimary}>{formatToday()}</Text>
+                <Text size="xxl" weight="bold" color={colors.textOnPrimary}>
+                  {staff !== undefined ? `Welcome ${staff.title.replace('.', '')} ${staff.firstName}` : 'Welcome'}
+                </Text>
+              </Stack>
+              <Pressable accessibilityRole="button" accessibilityLabel="Settings" style={styles.iconButton}>
+                <Icon name="settings-outline" size={40} color={colors.textOnPrimary} />
+              </Pressable>
+            </Row>
+
+            <Row justify="space-between">
+              <Row gap="sm" align="flex-start">
+                <Text size="lg" color={colors.textOnPrimary}>Tasks</Text>
+                <Badge label={String(tasks.length)} variant="count" />
+              </Row>
+              <Pressable accessibilityRole="link">
+                <Text size="lg" color={colors.textOnPrimary} underline>See All</Text>
+              </Pressable>
+            </Row>
+
+            {isLoading ? (
+              <Spinner size="large" color={colors.textOnPrimary} />
+            ) : (
+              <Stack gap="lg">
+                {tasks.map((task) => (
+                  <TaskCard key={task.id} task={task} />
+                ))}
+              </Stack>
+            )}
+          </Stack>
+        </View>
+
+        {/* Help */}
+        <View style={styles.helpSection}>
+          <StyledButton label="Need help ?" icon="headset-outline" variant="secondary" onPress={() => {}} />
+        </View>
+
+        {/* Medication roster */}
+        <Stack padding="lg" gap="md">
+          <Text size="xxl" weight="bold" align="center">Your Medication Roster</Text>
+          {error !== '' && <Text color={colors.danger} align="center">{error}</Text>}
+          {rosterSlots.map(({ slot, label, time }) => {
+            const entries = roster.filter((entry) => entry.slot === slot);
+            if (entries.length === 0) return null;
+
+            return (
+              <Stack key={slot} gap="sm">
+                <Row gap="md">
+                  <Text size="xl" weight="bold">{label}</Text>
+                  <Text size="lg" color={colors.textSecondary}>{time}</Text>
+                </Row>
+                {entries.map((entry, index) => (
+                  <Stack key={entry.id} gap="sm">
+                    {index > 0 && <Divider />}
+                    <RosterItem entry={entry} onAdminister={() => handleAdminister(entry.id)} />
+                  </Stack>
+                ))}
+              </Stack>
+            );
+          })}
+        </Stack>
+      </Screen>
+
+      <Nav>
+        <NavItem label="Home" icon="home" active onPress={() => {}} />
+        <NavItem label="Messages" icon="chatbubble-ellipses-outline" onPress={() => {}} />
+        <NavItem label="Patient files" icon="document-text-outline" onPress={() => {}} />
+        <NavItem label="Incidents" icon="alert-circle-outline" onPress={() => {}} />
+        <NavItem label="Notifications" icon="notifications-outline" onPress={() => {}} />
+      </Nav>
+    </View>
   );
 }
 
+const styles = StyleSheet.create({
+  page: { flex: 1, backgroundColor: colors.background },
+  header: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.xxl,
+    paddingBottom: spacing.xxl,
+  },
+  iconButton: { minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
+  helpSection: {
+    backgroundColor: colors.surfaceMuted,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    marginTop: -spacing.lg,
+    paddingVertical: spacing.xl,
+    alignItems: 'center',
+  },
+});

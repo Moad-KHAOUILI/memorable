@@ -3,21 +3,31 @@ describe('Login screen', () => {
     cy.visit('/login');
   });
 
-  it('renders the login form', () => {
-    cy.get('[data-testid="email-input"]').should('exist');
-    cy.get('[data-testid="password-input"]').should('exist');
+  it('renders the login screen', () => {
+    cy.contains('Memorable').should('exist');
     cy.get('[data-testid="login-button"]').should('exist');
+    cy.get('[data-testid="help-button"]').should('exist');
   });
 
-  it('logs in with valid credentials and navigates to home', () => {
-    // Replace with your Supabase test credentials before running this test
-    const testEmail = 'test@example.com';
-    const testPassword = 'password123';
-
-    cy.get('[data-testid="email-input"]').type(testEmail);
-    cy.get('[data-testid="password-input"]').type(testPassword);
+  it('navigates to the home screen on login', () => {
     cy.get('[data-testid="login-button"]').click();
+    cy.contains('Your Medication Roster').should('exist');
+  });
+});
 
-    cy.url().should('include', '/');
+describe('Home screen', () => {
+  beforeEach(() => {
+    cy.visit('/');
+  });
+
+  it('shows tasks and the medication roster', () => {
+    cy.contains('Tasks').should('exist');
+    cy.contains('Give Mr. Shahruri His Medicine').should('exist');
+    cy.contains('Your Medication Roster').should('exist');
+  });
+
+  it('marks a medication as administered', () => {
+    cy.get('[data-testid="administer-r2"]').click();
+    cy.get('[data-testid="administer-r2"]').should('contain', 'Administered');
   });
 });
