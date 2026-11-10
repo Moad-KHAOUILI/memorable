@@ -60,7 +60,7 @@ export default function LoginScreen() {
 
         <Stack gap="lg" align="center">
           <StyledButton label="Log in with Face ID" onPress={handleLogin} testID="login-button" />
-          <StyledButton label="I can't log in" size="md" underline onPress={() => {}} testID="help-button" />
+          <StyledButton label="I can't log in" size="md" underline onPress={() => {}} testID="cant-login-button" />
         </Stack>
 
         <View />

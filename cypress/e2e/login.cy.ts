@@ -6,7 +6,7 @@ describe('Login screen', () => {
   it('renders the login screen', () => {
     cy.contains('Memorable').should('exist');
     cy.get('[data-testid="login-button"]').should('exist');
-    cy.get('[data-testid="help-button"]').should('exist');
+    cy.get('[data-testid="cant-login-button"]').should('exist');
   });
 
   it('navigates to the home screen on login', () => {

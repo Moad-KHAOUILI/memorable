@@ -4,3 +4,6 @@ export * from './patientService';
 export * from './taskService';
 export * from './rosterService';
 export * from './staffService';
+export * from './messageService';
+export * from './notificationService';
+export * from './chatbotService';

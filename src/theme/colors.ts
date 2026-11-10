@@ -14,4 +14,6 @@ export const colors = {
   success: '#4A9A3F',
   danger: '#EF4B3F',
   warning: '#E5B800',
+  orange: '#F59E0B',
+  chatTint: '#D6EEFF',
 } as const;

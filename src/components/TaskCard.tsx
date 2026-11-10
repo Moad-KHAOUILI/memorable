@@ -9,11 +9,12 @@ import { colors } from '../theme';
 
 interface TaskCardProps {
   task: Task;
+  onPress?: () => void;
 }
 
-export function TaskCard({ task }: TaskCardProps) {
+export function TaskCard({ task, onPress }: TaskCardProps) {
   return (
-    <Card>
+    <Card onPress={onPress}>
       <Row justify="space-between" gap="sm">
         <Stack padding="md" flex={1}>
           <Text size="xl" weight="bold">{task.title}</Text>
