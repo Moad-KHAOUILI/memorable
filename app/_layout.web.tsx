@@ -63,6 +63,6 @@ export default function RootLayout() {
 }
 
 const styles = StyleSheet.create({
-  outer: { flex: 1, backgroundColor: '#D9DEE5', alignItems: 'center' },
+  outer: { flex: 1, alignItems: 'center' },
   app: { flex: 1, width: '100%', maxWidth: 480 },
 });

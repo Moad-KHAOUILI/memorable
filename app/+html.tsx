@@ -43,10 +43,16 @@ body {
 #root {
   height: 100%;
 }
+/* Desktop browser: grey around the phone-width app column. */
+@media (min-width: 520px) {
+  html, body {
+    background-color: #D9DEE5;
+  }
+}
 /* Installed on the iPhone home screen with a translucent status bar, iOS gives the page a window that is
    one status bar height shorter than the screen (measured: 848 of 896px) and never draws the app in the
    bottom strip; only this background colour shows there. The app is sized to that window (100%), the
-   navigation bar sits right above the strip, and screens can change the colour (see useStripColor). */
+   navigation bar sits right above the strip, and the login screen shows its photo there via the page background (see useFullScreenBackdrop). */
 /* Native-app feel: no text selection, no long-press menu, no grey tap flash. Text fields stay editable. */
 * {
   -webkit-user-select: none;

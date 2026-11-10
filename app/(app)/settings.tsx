@@ -87,7 +87,7 @@ export default function SettingsScreen() {
           />
           <StyledButton
             label="Log out"
-            variant="secondary"
+            variant="danger"
             size="md"
             icon="log-out-outline"
             onPress={handleLogout}
