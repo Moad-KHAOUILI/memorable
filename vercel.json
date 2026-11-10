@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npx expo export -p web",
+  "outputDirectory": "dist",
+  "framework": null,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/messages/:id", "destination": "/messages/[id]" },
+    { "source": "/patients/:id", "destination": "/patients/[id]" },
+    { "source": "/details/:id", "destination": "/details/[id]" }
+  ]
+}
