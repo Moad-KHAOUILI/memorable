@@ -36,4 +36,15 @@ body {
 #root {
   height: 100%;
 }
+/* Installed on the home screen: iOS makes 100% too short by the status bar height when the
+   status bar is translucent, leaving an empty strip under the navigation bar. Use the full screen height. */
+@media (display-mode: standalone) {
+  body {
+    bottom: auto;
+    height: 100vh;
+  }
+  #root {
+    height: 100vh;
+  }
+}
 `;
