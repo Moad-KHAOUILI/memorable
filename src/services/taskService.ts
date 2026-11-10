@@ -1,8 +1,6 @@
 import type { Task } from '../types';
 import { addDays, toDateKey } from '../utils/date';
 
-// Static data for the PWA assignment — replace with a Supabase query later.
-// Dates are relative to today so the demo always looks current.
 function buildTasks(): Task[] {
   const today = new Date();
   const day = (offset: number) => toDateKey(addDays(today, offset));

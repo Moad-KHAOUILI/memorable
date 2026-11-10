@@ -7,7 +7,6 @@ export interface Staff {
   role: string;
 }
 
-// Data needed to create a new staff account.
 export interface NewStaff {
   title: string;
   firstName: string;

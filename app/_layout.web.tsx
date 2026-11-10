@@ -10,12 +10,10 @@ import { colors } from '../src/theme';
 export default function RootLayout() {
   const initializeSession = useAuthStore((state) => state.initializeSession);
 
-  // Restore a saved login (Supabase keeps the session in the browser).
   useEffect(() => {
     initializeSession();
   }, [initializeSession]);
 
-  // iOS Safari ignores user-scalable=no for pinch gestures, so block the pinch itself.
   useEffect(() => {
     const preventZoom = (event: Event) => event.preventDefault();
     document.addEventListener('gesturestart', preventZoom);
@@ -25,7 +23,6 @@ export default function RootLayout() {
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return;
 
-    // In development, remove the service worker so the browser never serves a cached old version.
     if (__DEV__) {
       navigator.serviceWorker
         .getRegistrations()
@@ -51,7 +48,6 @@ export default function RootLayout() {
       </Head>
       <SafeAreaProvider>
         <StatusBar style="light" />
-        {/* On a desktop browser, show the app in a phone-width column */}
         <View style={styles.outer}>
           <View style={styles.app}>
             <Slot />

@@ -1,4 +1,4 @@
-// Colours taken from the Figma frames (Home Screen, Login Page).
+
 export const colors = {
   background: '#FFFFFF',
   surface: '#FFFFFF',

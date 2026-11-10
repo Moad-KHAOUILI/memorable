@@ -4,7 +4,6 @@ import type { Staff } from '../types';
 
 interface AuthState {
   user: Staff | undefined;
-  // Staff member pre-selected on the login screen (the last one who used this device, or a new account).
   lastStaff: Staff | undefined;
   isAuthenticated: boolean;
   isLoading: boolean;

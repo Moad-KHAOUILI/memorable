@@ -6,7 +6,6 @@ export const rosterSlots: { slot: RosterSlot; label: string; time: string }[] = 
   { slot: 'evening', label: 'Evening', time: '17:00 – 20:00' },
 ];
 
-// Static data for the PWA assignment — replace with a Supabase query later.
 const roster: RosterEntry[] = [
   { id: 'r1', patientName: 'Eleanor Pena', medication: 'Lisinopril 10 mg', slot: 'morning', status: 'administered', route: 'oral' },
   { id: 'r2', patientName: 'Esther Howard', medication: 'Levothyroxine', slot: 'morning', status: 'due', route: 'oral' },

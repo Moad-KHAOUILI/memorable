@@ -1,7 +1,6 @@
 import { supabase } from '../lib/supabase';
 import type { Patient } from '../types';
 
-// Shape of a row in the Supabase `patients` table (snake_case columns).
 interface PatientRow {
   id: string;
   first_name: string;

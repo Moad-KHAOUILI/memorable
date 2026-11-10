@@ -1,4 +1,4 @@
-// Soft shadow for raised surfaces (cards, pills). elevation is the Android equivalent.
+
 export const shadows = {
   soft: {
     shadowColor: '#000000',

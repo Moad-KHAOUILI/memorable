@@ -1,7 +1,6 @@
 import type { ChatMessage, Conversation } from '../types';
 import { formatTime } from '../utils/date';
 
-// Static data for the PWA assignment — replace with Supabase tables later.
 const conversations: Conversation[] = [
   { id: 'c1', name: 'Living Group 1 Doctors', lastMessage: 'Did we run out of Metoprolol?', lastMessageAgo: '15 min', lastMessageFromMe: true, lastMessageRead: false, unreadCount: 0 },
   { id: 'c2', name: 'Dr. Bethany Londo', lastMessage: 'Could you replace me today? I got sick.', lastMessageAgo: '2h', lastMessageFromMe: false, lastMessageRead: false, unreadCount: 2 },
