@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet } from 'react-native';
 import { Text } from './Text';
 import { Icon, type IconName } from './Icon';
-import { colors, spacing } from '../../theme';
+import { colors } from '../../theme';
 
 interface NavItemProps {
   label: string;
