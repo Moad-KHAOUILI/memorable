@@ -33,6 +33,8 @@ export default function RootLayout() {
   return (
     <>
       <Head>
+        <title>Memorable</title>
+        <meta name="description" content="Care tracking and reminders for clinic staff caring for elderly patients" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content={colors.primary} />
         <meta name="mobile-web-app-capable" content="yes" />
