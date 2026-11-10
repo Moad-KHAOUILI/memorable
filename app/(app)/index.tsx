@@ -101,8 +101,8 @@ export default function HomeScreen() {
       {/* Grey panel: starts below the header and scrolls up over it.
           box-none lets taps on the visible part of the header reach the header. */}
       <ScrollView style={styles.scrollLayer} contentContainerStyle={styles.passThrough}>
-        <View style={[styles.spacer, { height: Math.max(headerHeight - HEADER_OVERLAP, 0) }]} />
-        <View style={[styles.panel, { minHeight: pageHeight }]}>
+        <View style={[styles.spacer, { height: Math.max(headerHeight - HEADER_OVERLAP - TOP_GAP, 0) }]} />
+        <View style={[styles.panel, { minHeight: pageHeight - TOP_GAP }]}>
           {/* Help */}
           <View style={styles.helpSection}>
             <StyledButton
@@ -149,6 +149,9 @@ export default function HomeScreen() {
 
 // How far the grey panel overlaps the bottom of the blue header before scrolling.
 const HEADER_OVERLAP = spacing.xxl - spacing.sm;
+// Blue strip that stays visible at the top when the panel is scrolled all the way up.
+// Kept smaller than the header's top padding (44) so no header text peeks out.
+const TOP_GAP = 32;
 
 const styles = StyleSheet.create({
   iconButton: { minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
@@ -172,7 +175,15 @@ const styles = StyleSheet.create({
     paddingTop: 44,
     paddingBottom: spacing.xxl + spacing.lg,
   },
-  scrollLayer: { ...StyleSheet.absoluteFillObject, pointerEvents: 'box-none' },
+  // Starts TOP_GAP below the top, with rounded corners so the panel keeps its shape at the top.
+  scrollLayer: {
+    ...StyleSheet.absoluteFillObject,
+    top: TOP_GAP,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    overflow: 'hidden',
+    pointerEvents: 'box-none',
+  },
   passThrough: { pointerEvents: 'box-none' },
   // Transparent space above the panel: taps go through to the header behind it.
   spacer: { pointerEvents: 'none' },
