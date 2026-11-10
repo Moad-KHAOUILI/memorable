@@ -43,15 +43,15 @@ body {
 #root {
   height: 100%;
 }
-/* Installed on the home screen: iOS makes 100% too short by the status bar height when the
-   status bar is translucent, leaving an empty strip under the navigation bar. Use the full screen height. */
+/* Installed on the home screen: iOS makes 100% / 100vh too short when the status bar is translucent,
+   leaving a white strip at the bottom. --app-height is set from the real screen height in _layout.web.tsx. */
 @media (display-mode: standalone) {
   body {
     bottom: auto;
-    height: 100vh;
+    height: var(--app-height, 100vh);
   }
   #root {
-    height: 100vh;
+    height: var(--app-height, 100vh);
   }
 }
 /* Native-app feel: no text selection, no long-press menu, no grey tap flash. Text fields stay editable. */

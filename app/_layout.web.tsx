@@ -15,6 +15,13 @@ export default function RootLayout() {
     initializeSession();
   }, [initializeSession]);
 
+  // Installed on the iPhone home screen, CSS heights come out too short (translucent status bar),
+  // so use the real screen height. The app is portrait-only (see manifest.json).
+  useEffect(() => {
+    if (!window.matchMedia('(display-mode: standalone)').matches) return;
+    document.documentElement.style.setProperty('--app-height', `${window.screen.height}px`);
+  }, []);
+
   // iOS Safari ignores user-scalable=no for pinch gestures, so block the pinch itself.
   useEffect(() => {
     const preventZoom = (event: Event) => event.preventDefault();
