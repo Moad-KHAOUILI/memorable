@@ -2,6 +2,7 @@ import { router, usePathname, type Href } from 'expo-router';
 import { Nav } from './primitives/Nav';
 import { NavItem } from './primitives/NavItem';
 import type { IconName } from './primitives/Icon';
+import { useLayoutInsets } from '../hooks/useLayoutInsets';
 
 interface NavTab {
   label: string;
@@ -27,9 +28,10 @@ function isActive(tab: NavTab, pathname: string): boolean {
 // Bottom navigation shown on every screen of the logged-in app.
 export function BottomNav() {
   const pathname = usePathname();
+  const { bottom } = useLayoutInsets();
 
   return (
-    <Nav>
+    <Nav bottomInset={bottom}>
       {tabs.map((tab) => {
         const active = isActive(tab, pathname);
         return (

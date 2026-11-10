@@ -10,6 +10,7 @@ import { TaskCard } from '../../src/components/TaskCard';
 import { getTasks } from '../../src/services';
 import type { Task } from '../../src/types';
 import { colors, spacing } from '../../src/theme';
+import { useLayoutInsets } from '../../src/hooks/useLayoutInsets';
 import {
   addDays,
   formatLongDate,
@@ -21,6 +22,7 @@ import {
 } from '../../src/utils/date';
 
 export default function TasksScreen() {
+  const { headerTop } = useLayoutInsets();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -51,7 +53,7 @@ export default function TasksScreen() {
 
   return (
     <Screen padding="none" backgroundColor={colors.primary}>
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: headerTop }]}>
         <Stack gap="lg">
           <Text size="xxl" weight="bold" align="center" color={colors.textOnPrimary}>
             {formatMonthYear(today)}
@@ -115,7 +117,6 @@ export default function TasksScreen() {
 
 const styles = StyleSheet.create({
   header: {
-    paddingTop: 44,
     paddingHorizontal: spacing.lg,
     paddingBottom: spacing.sm,
   },

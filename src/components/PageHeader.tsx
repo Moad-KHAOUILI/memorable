@@ -5,6 +5,7 @@ import { Row } from './primitives/Row';
 import { Stack } from './primitives/Stack';
 import { Text } from './primitives/Text';
 import { colors, spacing } from '../theme';
+import { useLayoutInsets } from '../hooks/useLayoutInsets';
 
 interface PageHeaderProps {
   title: string;
@@ -27,13 +28,15 @@ export function PageHeader({
   onAction,
   withSheet = true,
 }: PageHeaderProps) {
+  const { headerTop } = useLayoutInsets();
+
   const goBack = () => {
     if (router.canGoBack()) router.back();
     else router.replace('/');
   };
 
   return (
-    <View style={[styles.header, withSheet && styles.withSheet]}>
+    <View style={[styles.header, withSheet && styles.withSheet, { paddingTop: headerTop }]}>
       <Row justify="space-between" align="flex-end" gap="sm">
         <Row gap="sm" flex={1}>
           {showBack && (
@@ -72,7 +75,6 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.primary,
     paddingHorizontal: spacing.lg,
-    paddingTop: 44,
     paddingBottom: spacing.xl,
   },
   withSheet: { paddingBottom: spacing.xxl + spacing.lg },

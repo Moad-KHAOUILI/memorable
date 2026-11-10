@@ -21,7 +21,7 @@ export function NavItem({ label, onPress, active = false, icon }: NavItemProps) 
       accessibilityState={{ selected: active }}
     >
       {icon !== undefined ? (
-        <Icon name={icon} size={40} color={colors.navIcon} />
+        <Icon name={icon} size={28} color={colors.navIcon} />
       ) : (
         <Text size="md" weight={active ? 'bold' : 'normal'}>{label}</Text>
       )}

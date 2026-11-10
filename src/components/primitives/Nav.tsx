@@ -3,10 +3,12 @@ import { colors, spacing } from '../../theme';
 
 interface NavProps {
   children: React.ReactNode;
+  // Extra space below the items, e.g. for the phone's home indicator.
+  bottomInset?: number;
 }
 
-export function Nav({ children }: NavProps) {
-  return <View style={styles.base}>{children}</View>;
+export function Nav({ children, bottomInset = spacing.md }: NavProps) {
+  return <View style={[styles.base, { paddingBottom: bottomInset }]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
@@ -15,7 +17,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     paddingTop: spacing.sm,
-    paddingBottom: spacing.lg,
     backgroundColor: colors.surface,
     borderTopWidth: 1,
     borderTopColor: colors.border,

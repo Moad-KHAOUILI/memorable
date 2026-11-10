@@ -9,9 +9,11 @@ import { ChatView } from '../../../src/components/ChatView';
 import { getConversation, getMessages, sendMessage } from '../../../src/services';
 import type { ChatMessage, Conversation } from '../../../src/types';
 import { colors, spacing } from '../../../src/theme';
+import { useLayoutInsets } from '../../../src/hooks/useLayoutInsets';
 
 export default function DirectMessageScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { topGap } = useLayoutInsets();
   const [conversation, setConversation] = useState<Conversation | undefined>(undefined);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [error, setError] = useState('');
@@ -41,6 +43,7 @@ export default function DirectMessageScreen() {
 
   return (
     <View style={styles.container}>
+      <View style={{ height: topGap, backgroundColor: colors.primary }} />
       <View style={styles.header}>
         <Row gap="md">
           <Pressable
@@ -78,7 +81,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.primary },
   header: {
     backgroundColor: colors.surface,
-    paddingTop: 44,
+    paddingTop: spacing.md,
     paddingBottom: spacing.md,
     paddingHorizontal: spacing.sm,
   },

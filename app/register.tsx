@@ -11,12 +11,14 @@ import { StyledButton } from '../src/components/StyledButton';
 import { registerStaff } from '../src/services';
 import { useAuthStore } from '../src/state/useAuthStore';
 import { colors, shadows, spacing } from '../src/theme';
+import { useLayoutInsets } from '../src/hooks/useLayoutInsets';
 
 const titleOptions = ['Dr.', 'Nurse', 'None'];
 const roleOptions = ['Doctor', 'Nurse', 'Caregiver'];
 
 export default function RegisterScreen() {
   const setLastStaff = useAuthStore((state) => state.setLastStaff);
+  const { headerTop } = useLayoutInsets();
   const [title, setTitle] = useState('Nurse');
   const [role, setRole] = useState('Nurse');
   const [firstName, setFirstName] = useState('');
@@ -66,7 +68,7 @@ export default function RegisterScreen() {
 
   return (
     <Screen padding="none" scrollable={false} backgroundColor={colors.primary}>
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: headerTop }]}>
         <Row gap="sm">
           <Pressable onPress={goBack} accessibilityRole="button" accessibilityLabel="Back" style={styles.iconButton}>
             <Icon name="chevron-back" size={32} color={colors.textOnPrimary} />
@@ -148,7 +150,7 @@ function Chip({ label, selected, onPress }: ChipProps) {
 }
 
 const styles = StyleSheet.create({
-  header: { paddingTop: 44, paddingHorizontal: spacing.sm, paddingBottom: spacing.xl },
+  header: { paddingHorizontal: spacing.sm, paddingBottom: spacing.xl },
   iconButton: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
   sheet: {
     flex: 1,

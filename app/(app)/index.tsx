@@ -16,6 +16,7 @@ import { useAuthStore } from '../../src/state/useAuthStore';
 import type { RosterEntry, Task } from '../../src/types';
 import { colors, shadows, spacing } from '../../src/theme';
 import { formatHeaderDate, toDateKey } from '../../src/utils/date';
+import { useLayoutInsets } from '../../src/hooks/useLayoutInsets';
 
 export default function HomeScreen() {
   const staff = useAuthStore((state) => state.user);
@@ -23,9 +24,9 @@ export default function HomeScreen() {
   const [roster, setRoster] = useState<RosterEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  // Sizes used to let the grey panel scroll up over the fixed header.
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const [pageHeight, setPageHeight] = useState(0);
+  const { headerTop, topGap } = useLayoutInsets();
+  // Height of the scroll area, so the grey panel is always tall enough to cover the header.
+  const [scrollHeight, setScrollHeight] = useState(0);
 
   useEffect(() => {
     Promise.all([getTasksForDay(toDateKey(new Date())), getRoster()])
@@ -49,109 +50,111 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={styles.page} onLayout={(event) => setPageHeight(event.nativeEvent.layout.height)}>
-      {/* Header with today's tasks — stays in place, the panel below slides over it */}
-      <View style={styles.header} onLayout={(event) => setHeaderHeight(event.nativeEvent.layout.height)}>
-        <Stack gap="lg">
-          <Row justify="space-between" align="flex-start">
-            <Stack flex={1}>
-              <Text size="md" weight="medium" color={colors.textOnPrimary}>{formatHeaderDate(new Date())}</Text>
-              <Text size="xxl" weight="bold" color={colors.textOnPrimary}>
-                {staff !== undefined ? `Welcome ${[staff.title.replace('.', ''), staff.firstName].filter((part) => part !== '').join(' ')}` : 'Welcome'}
-              </Text>
-            </Stack>
-            <Pressable
-              onPress={() => router.push('/settings')}
-              accessibilityRole="button"
-              accessibilityLabel="Settings"
-              style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
-              testID="settings-button"
-            >
-              <Icon name="settings-outline" size={40} color={colors.textOnPrimary} />
-            </Pressable>
-          </Row>
-
-          <Row justify="space-between">
-            <Row gap="sm" align="flex-start">
-              <Text size="lg" color={colors.textOnPrimary}>Tasks</Text>
-              <Badge label={String(tasks.length)} variant="count" />
-            </Row>
-            <Pressable
-              onPress={() => router.navigate('/tasks')}
-              accessibilityRole="link"
-              style={({ pressed }) => pressed && styles.pressed}
-              testID="see-all-tasks"
-            >
-              <Text size="lg" color={colors.textOnPrimary} underline>See All</Text>
-            </Pressable>
-          </Row>
-
-          {isLoading ? (
-            <Spinner size="large" color={colors.textOnPrimary} />
-          ) : (
+    <View style={styles.page}>
+      {/* Scroll area starts below the status bar; its rounded corners shape the panel at the top. */}
+      <View
+        style={[styles.scrollArea, { top: topGap }]}
+        onLayout={(event) => setScrollHeight(event.nativeEvent.layout.height)}
+      >
+        {/* The header (index 0) sticks to the top while the grey panel scrolls up over it. */}
+        <ScrollView style={styles.scroll} stickyHeaderIndices={[0]}>
+          {/* Header with today's tasks */}
+          <View style={[styles.header, { paddingTop: headerTop - topGap }]}>
             <Stack gap="lg">
-              {tasks.map((task) => (
-                <TaskCard key={task.id} task={task} onPress={() => router.navigate('/tasks')} />
-              ))}
-            </Stack>
-          )}
-        </Stack>
-      </View>
+              <Row justify="space-between" align="flex-start">
+                <Stack flex={1}>
+                  <Text size="md" weight="medium" color={colors.textOnPrimary}>{formatHeaderDate(new Date())}</Text>
+                  <Text size="xxl" weight="bold" color={colors.textOnPrimary}>
+                    {staff !== undefined ? `Welcome ${[staff.title.replace('.', ''), staff.firstName].filter((part) => part !== '').join(' ')}` : 'Welcome'}
+                  </Text>
+                </Stack>
+                <Pressable
+                  onPress={() => router.push('/settings')}
+                  accessibilityRole="button"
+                  accessibilityLabel="Settings"
+                  style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
+                  testID="settings-button"
+                >
+                  <Icon name="settings-outline" size={40} color={colors.textOnPrimary} />
+                </Pressable>
+              </Row>
 
-      {/* Grey panel: starts below the header and scrolls up over it.
-          box-none lets taps on the visible part of the header reach the header. */}
-      <ScrollView style={styles.scrollLayer} contentContainerStyle={styles.passThrough}>
-        <View style={[styles.spacer, { height: Math.max(headerHeight - HEADER_OVERLAP - TOP_GAP, 0) }]} />
-        <View style={[styles.panel, { minHeight: pageHeight - TOP_GAP }]}>
-          {/* Help */}
-          <View style={styles.helpSection}>
-            <StyledButton
-              label="Need help ?"
-              icon="headset-outline"
-              variant="secondary"
-              size="md"
-              onPress={() => router.push('/help')}
-              testID="help-button"
-            />
+              <Row justify="space-between">
+                <Row gap="sm" align="flex-start">
+                  <Text size="lg" color={colors.textOnPrimary}>Tasks</Text>
+                  <Badge label={String(tasks.length)} variant="count" />
+                </Row>
+                <Pressable
+                  onPress={() => router.navigate('/tasks')}
+                  accessibilityRole="link"
+                  style={({ pressed }) => pressed && styles.pressed}
+                  testID="see-all-tasks"
+                >
+                  <Text size="lg" color={colors.textOnPrimary} underline>See All</Text>
+                </Pressable>
+              </Row>
+
+              {isLoading ? (
+                <Spinner size="large" color={colors.textOnPrimary} />
+              ) : (
+                <Stack gap="lg">
+                  {tasks.map((task) => (
+                    <TaskCard key={task.id} task={task} onPress={() => router.navigate('/tasks')} />
+                  ))}
+                </Stack>
+              )}
+            </Stack>
           </View>
 
-          {/* Medication roster */}
-          <Stack padding="lg" gap="lg">
-            <Text size="xxl" weight="bold" align="center">Your Medication Roster</Text>
-            {error !== '' && <Text color={colors.danger} align="center">{error}</Text>}
-            {rosterSlots.map(({ slot, label, time }) => {
-              const entries = roster.filter((entry) => entry.slot === slot);
-              if (entries.length === 0) return null;
+          {/* Grey panel that slides up over the header */}
+          <View style={[styles.panel, { minHeight: scrollHeight }]}>
+            {/* Help */}
+            <View style={styles.helpSection}>
+              <StyledButton
+                label="Need help ?"
+                icon="headset-outline"
+                variant="secondary"
+                size="md"
+                onPress={() => router.push('/help')}
+                testID="help-button"
+              />
+            </View>
 
-              return (
-                <Stack key={slot} gap="sm">
-                  <Row gap="md" align="flex-end">
-                    <Text size="xl" weight="bold">{label}</Text>
-                    <Text size="lg" color={colors.textSecondary}>{time}</Text>
-                  </Row>
-                  <View style={styles.rosterGroup}>
-                    {entries.map((entry, index) => (
-                      <Stack key={entry.id} gap="md">
-                        {index > 0 && <Divider />}
-                        <RosterItem entry={entry} onAdminister={() => handleAdminister(entry.id)} />
-                      </Stack>
-                    ))}
-                  </View>
-                </Stack>
-              );
-            })}
-          </Stack>
-        </View>
-      </ScrollView>
+            {/* Medication roster */}
+            <Stack padding="lg" gap="lg">
+              <Text size="xxl" weight="bold" align="center">Your Medication Roster</Text>
+              {error !== '' && <Text color={colors.danger} align="center">{error}</Text>}
+              {rosterSlots.map(({ slot, label, time }) => {
+                const entries = roster.filter((entry) => entry.slot === slot);
+                if (entries.length === 0) return null;
+
+                return (
+                  <Stack key={slot} gap="sm">
+                    <Row gap="md" align="flex-end">
+                      <Text size="xl" weight="bold">{label}</Text>
+                      <Text size="lg" color={colors.textSecondary}>{time}</Text>
+                    </Row>
+                    <View style={styles.rosterGroup}>
+                      {entries.map((entry, index) => (
+                        <Stack key={entry.id} gap="md">
+                          {index > 0 && <Divider />}
+                          <RosterItem entry={entry} onAdminister={() => handleAdminister(entry.id)} />
+                        </Stack>
+                      ))}
+                    </View>
+                  </Stack>
+                );
+              })}
+            </Stack>
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 }
 
 // How far the grey panel overlaps the bottom of the blue header before scrolling.
 const HEADER_OVERLAP = spacing.xxl - spacing.sm;
-// Blue strip that stays visible at the top when the panel is scrolled all the way up.
-// Kept smaller than the header's top padding (44) so no header text peeks out.
-const TOP_GAP = 32;
 
 const styles = StyleSheet.create({
   iconButton: { minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
@@ -164,31 +167,24 @@ const styles = StyleSheet.create({
     ...shadows.soft,
   },
   page: { flex: 1, backgroundColor: colors.primary },
-  // The header sits behind the scroll layer.
-  header: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: colors.primary,
-    paddingHorizontal: spacing.lg,
-    paddingTop: 44,
-    paddingBottom: spacing.xxl + spacing.lg,
-  },
-  // Starts TOP_GAP below the top, with rounded corners so the panel keeps its shape at the top.
-  scrollLayer: {
+  // Below the status bar strip (top is set from the safe area), rounded at the top.
+  scrollArea: {
     ...StyleSheet.absoluteFillObject,
-    top: TOP_GAP,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     overflow: 'hidden',
-    pointerEvents: 'box-none',
   },
-  passThrough: { pointerEvents: 'box-none' },
-  // Transparent space above the panel: taps go through to the header behind it.
-  spacer: { pointerEvents: 'none' },
-  // Rounded grey panel that slides up over the header.
+  scroll: { flex: 1 },
+  header: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.xxl + spacing.lg,
+  },
+  // Rounded grey panel; drawn above the sticky header so it covers it while scrolling.
   panel: {
+    position: 'relative',
+    zIndex: 20,
+    marginTop: -HEADER_OVERLAP,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     overflow: 'hidden',
