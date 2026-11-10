@@ -31,10 +31,10 @@ export function NavItem({ label, onPress, active = false, icon }: NavItemProps) 
 const styles = StyleSheet.create({
   base: {
     flex: 1,
-    minHeight: 48,
+    minHeight: 44,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.xs,
+    gap: 2,
   },
   pressed: { opacity: 0.6, transform: [{ scale: 0.95 }] },
 });

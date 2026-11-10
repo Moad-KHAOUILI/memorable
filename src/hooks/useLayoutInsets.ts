@@ -12,6 +12,6 @@ export function useLayoutInsets() {
     // Height of the strip that stays visible above a panel scrolled all the way up.
     topGap: Math.max(insets.top, 32),
     // Bottom padding for the navigation bar: just enough to keep the labels clear of the home indicator.
-    bottom: Math.max(insets.bottom - spacing.md, spacing.sm),
+    bottom: Math.max(Math.round(insets.bottom * 0.35), spacing.xs),
   };
 }
