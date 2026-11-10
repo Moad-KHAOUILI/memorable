@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
-import { Screen } from '../../src/components/primitives/Screen';
 import { Stack } from '../../src/components/primitives/Stack';
 import { Row } from '../../src/components/primitives/Row';
 import { Text } from '../../src/components/primitives/Text';
@@ -23,6 +22,9 @@ export default function HomeScreen() {
   const [roster, setRoster] = useState<RosterEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  // Sizes used to let the grey panel scroll up over the fixed header.
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const [pageHeight, setPageHeight] = useState(0);
 
   useEffect(() => {
     Promise.all([getCurrentStaff(), getTasksForDay(toDateKey(new Date())), getRoster()])
@@ -47,9 +49,9 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={styles.page}>
-      {/* Header with today's tasks — stays in place */}
-      <View style={styles.header}>
+    <View style={styles.page} onLayout={(event) => setPageHeight(event.nativeEvent.layout.height)}>
+      {/* Header with today's tasks — stays in place, the panel below slides over it */}
+      <View style={styles.header} onLayout={(event) => setHeaderHeight(event.nativeEvent.layout.height)}>
         <Stack gap="lg">
           <Row justify="space-between" align="flex-start">
             <Stack flex={1}>
@@ -96,9 +98,11 @@ export default function HomeScreen() {
         </Stack>
       </View>
 
-      {/* Only the grey part below the header scrolls */}
-      <View style={styles.scrollArea}>
-        <Screen padding="none" backgroundColor={colors.backgroundMuted}>
+      {/* Grey panel: starts below the header and scrolls up over it.
+          box-none lets taps on the visible part of the header reach the header. */}
+      <ScrollView style={styles.scrollLayer} contentContainerStyle={styles.passThrough}>
+        <View style={[styles.spacer, { height: Math.max(headerHeight - HEADER_OVERLAP, 0) }]} />
+        <View style={[styles.panel, { minHeight: pageHeight }]}>
           {/* Help */}
           <View style={styles.helpSection}>
             <StyledButton
@@ -137,19 +141,16 @@ export default function HomeScreen() {
               );
             })}
           </Stack>
-        </Screen>
-      </View>
+        </View>
+      </ScrollView>
     </View>
   );
 }
 
+// How far the grey panel overlaps the bottom of the blue header before scrolling.
+const HEADER_OVERLAP = spacing.xxl - spacing.sm;
+
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: colors.primary,
-    paddingHorizontal: spacing.lg,
-    paddingTop: 44,
-    paddingBottom: spacing.xxl + spacing.lg,
-  },
   iconButton: { minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
   pressed: { opacity: 0.6 },
   rosterGroup: {
@@ -160,10 +161,23 @@ const styles = StyleSheet.create({
     ...shadows.soft,
   },
   page: { flex: 1, backgroundColor: colors.primary },
-  // Rounded grey panel that scrolls under the fixed blue header.
-  scrollArea: {
-    flex: 1,
-    marginTop: -(spacing.xxl - spacing.sm),
+  // The header sits behind the scroll layer.
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.lg,
+    paddingTop: 44,
+    paddingBottom: spacing.xxl + spacing.lg,
+  },
+  scrollLayer: { ...StyleSheet.absoluteFillObject, pointerEvents: 'box-none' },
+  passThrough: { pointerEvents: 'box-none' },
+  // Transparent space above the panel: taps go through to the header behind it.
+  spacer: { pointerEvents: 'none' },
+  // Rounded grey panel that slides up over the header.
+  panel: {
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     overflow: 'hidden',
